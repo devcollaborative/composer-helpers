@@ -6,6 +6,7 @@ use Composer\Composer;
 use Composer\EventDispatcher\EventSubscriberInterface;
 use Composer\IO\IOInterface;
 use Composer\Plugin\PluginInterface;
+use Composer\Script\ScriptEvents;
 
 class Plugin implements PluginInterface, EventSubscriberInterface
 {
