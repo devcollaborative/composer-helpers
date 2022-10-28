@@ -52,28 +52,20 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         $supported_versions= explode(',', $module_data->supported_branches);
 
         $release_data = $module_data->releases[0];
-
-        // var_dump($release_data);
-        foreach ($release_data as $release) {
-          // var_dump($release->version[0]);
-          if ($release->version[0] == $version) {
-            $is_supported = false;
-            foreach($supported_versions as $supported_version) {
-              if (str_starts_with($version, $supported_version)) {
-                $is_supported = true;
-              }
-            }
-
-            if (!$is_supported) {
-            $this->unsupported_modules[] = $name;
+        $is_supported = false;
+        foreach($supported_versions as $supported_version) {
+          if (str_starts_with($version, $supported_version)) {
+            $is_supported = true;
           }
-          }
+        }
+
+        if (!$is_supported) {
+          $this->unsupported_modules[] = $name;
         }
       }
     }
 
     var_dump($this->unsupported_modules);
-
     // lando drush core:requirements --severity=2 --ignore=public:///.htaccess,entity_update,search_api_server_unavailable"
   }
 }
