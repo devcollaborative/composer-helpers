@@ -8,7 +8,7 @@
         }
     ],
     "require": {
-        "drush/drush": "^10 || ^ 11"
+        "drush/drush": "^10 || ^11"
     },
     "scripts": {
         "post-update-cmd": "lando drush core:requirements --severity=2 --ignore=public:///.htaccess,entity_update,search_api_server_unavailable"
