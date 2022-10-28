@@ -1,6 +1,6 @@
 <?php
 
-namespace devcollaborative\ComposerHelpersPlugin;
+namespace devcollaborative;
 
 use Composer\Composer;
 use Composer\EventDispatcher\EventSubscriberInterface;
