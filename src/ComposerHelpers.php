@@ -9,8 +9,16 @@ use Composer\Plugin\PluginInterface;
 
 class Plugin implements PluginInterface, EventSubscriberInterface
 {
-    public static function getSubscribedEvents()
-  {
+  protected $composer;
+  protected $io;
+
+  public function activate(Composer $composer, IOInterface $io)
+    {
+      $this->composer = $composer;
+      $this->io = $io;
+    }
+
+  public static function getSubscribedEvents() {
       return array(
           ScriptEvents::POST_UPDATE_CMD => 'checkDrupalStatus',
       );
