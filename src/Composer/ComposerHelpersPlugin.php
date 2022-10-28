@@ -1,13 +1,13 @@
 <?php
 
-namespace devcollaborative\ComposereHelpers;
+namespace devcollaborative\ComposerHelpersPlugin;
 
 use Composer\Composer;
 use Composer\EventDispatcher\EventSubscriberInterface;
 use Composer\IO\IOInterface;
 use Composer\Plugin\PluginInterface;
 
-class ComposerHelpersPLugin implements PluginInterface, EventSubscriberInterface
+class ComposerHelpersPlugin implements PluginInterface, EventSubscriberInterface
 {
     public static function getSubscribedEvents()
   {

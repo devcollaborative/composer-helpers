@@ -9,7 +9,7 @@
         }
     ],
     "extra": {
-        "class": "devcollaborative\\ComposereHelpers"
+        "class": "devcollaborative\\ComposerHelpersPlugin"
     },
     "require": {
         "composer-plugin-api": "^2.0",
