@@ -16,5 +16,8 @@ class ComposerHelpersPLugin implements PluginInterface, EventSubscriberInterface
       );
   }
 
-
+  public function checkDrupalStatus() {
+    var_dump($this->composer);
+    // lando drush core:requirements --severity=2 --ignore=public:///.htaccess,entity_update,search_api_server_unavailable"
+  }
 }
