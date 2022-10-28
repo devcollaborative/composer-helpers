@@ -12,11 +12,16 @@ class Plugin implements PluginInterface, EventSubscriberInterface
   protected $composer;
   protected $io;
 
-  public function activate(Composer $composer, IOInterface $io)
-    {
+  public function activate(Composer $composer, IOInterface $io) {
       $this->composer = $composer;
       $this->io = $io;
-    }
+  }
+
+  public function deactivate(Composer $composer, IOInterface $io) {
+  }
+
+  public function uninstall(Composer $composer, IOInterface $io) {
+  }
 
   public static function getSubscribedEvents() {
       return array(
