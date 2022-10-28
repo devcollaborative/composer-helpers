@@ -1,0 +1,16 @@
+{
+    "name": "devcollab/composer-helpers",
+    "description": "Helper scripts for DevCollaborative's composer workflow",
+    "authors": [
+        {
+            "name": "Jeff Hipp",
+            "email": "jeff@devcollaborative.com"
+        }
+    ],
+    "require": {
+        "drush/drush": "^10 || ^ 11"
+    },
+    "scripts": {
+        "post-update-cmd": "lando drush core:requirements --severity=2 --ignore=public:///.htaccess,entity_update,search_api_server_unavailable"
+    }
+}
