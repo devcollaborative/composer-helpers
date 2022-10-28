@@ -8,10 +8,8 @@
             "email": "jeff@devcollaborative.com"
         }
     ],
-    "autoload": {
-        "psr-4": {
-            "devcollaborative\\ComposereHelpers\\": "src/"
-        }
+    "extra": {
+        "class": "devCollaborative\\ComposerHelpersPlugin"
     },
     "require": {
         "composer-plugin-api": "^2.0",
