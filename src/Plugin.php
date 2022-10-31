@@ -44,7 +44,8 @@ class Plugin implements PluginInterface, EventSubscriberInterface
 
     //TODO Add means of configuring whether lando prefix is used.
     $command = 'lando drush core:requirements --severity=2 --ignore=' . $ignore_parameter;
-    var_dump($command);
-    echo exec($command);
+
+    $output = shell_exec($command);
+    echo $output;
   }
 }
