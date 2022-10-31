@@ -2,6 +2,7 @@
     "name": "devcollaborative/composer-helpers",
     "description": "Helper scripts for DevCollaborative's composer workflow",
     "type": "composer-plugin",
+    "license": "GPL-2.0-or-later",
     "authors": [
         {
             "name": "Jeff Hipp",
