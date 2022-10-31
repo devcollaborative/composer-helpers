@@ -32,40 +32,16 @@ class Plugin implements PluginInterface, EventSubscriberInterface
   }
 
   public function checkDrupalStatus() {
-    $repositoryManager = $this->composer->getRepositoryManager();
-    $localRepository = $repositoryManager->getLocalRepository();
-    $installationManager = $this->composer->getInstallationManager();
-    $packages = $localRepository->getPackages();
+    $ignored_status_messages = [
+      'public:///.htaccess',
+      'entity_update',
+      'search_api_server_unavailable',
+    ];
 
-    foreach($packages as $package) {
-      if (
-        $package->getType() == 'drupal-module' &&
-        isset($package->getExtra()['drupal']['version'])
-      ) {
-        $name= explode('/', $package->getName())[1];
-        $version = $package->getExtra()['drupal']['version'];
+    //TODO Allow additional ignored status messages to be set in composer.json config.
 
-        $module_data = simplexml_load_string(
-          file_get_contents("https://updates.drupal.org/release-history/$name/current")
-        );
+    $ignore_parameter = implode(',', $ignored_status_messages);
 
-        $supported_versions= explode(',', $module_data->supported_branches);
-
-        $release_data = $module_data->releases[0];
-        $is_supported = false;
-        foreach($supported_versions as $supported_version) {
-          if (str_starts_with($version, $supported_version)) {
-            $is_supported = true;
-          }
-        }
-
-        if (!$is_supported) {
-          $this->unsupported_modules[] = $name;
-        }
-      }
-    }
-
-    var_dump($this->unsupported_modules);
-    // lando drush core:requirements --severity=2 --ignore=public:///.htaccess,entity_update,search_api_server_unavailable"
+    echo exec('lando drush core:requirements --severity=2 --ignore=' . $ignore_parameter);
   }
 }
