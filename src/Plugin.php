@@ -42,6 +42,9 @@ class Plugin implements PluginInterface, EventSubscriberInterface
 
     $ignore_parameter = implode(',', $ignored_status_messages);
 
-    echo exec('lando drush core:requirements --severity=2 --ignore=' . $ignore_parameter);
+    //TODO Add means of configuring whether lando prefix is used.
+    $command = 'lando drush core:requirements --severity=2 --ignore=' . $ignore_parameter;
+    var_dump($command);
+    echo exec($command);
   }
 }
