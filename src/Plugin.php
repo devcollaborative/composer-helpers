@@ -71,11 +71,11 @@ class Plugin implements PluginInterface, EventSubscriberInterface
       );
       foreach($this->unsupportedModules as $module) {
         $this->io->write(
-            "<comment>-$module</comment>"
+            "<comment>- $module</comment>"
         );
       }
       $this->io->write(
-            "<comment>Please upgrade this module to a supported branch as soon as possible.</comment>"
+            "<comment>Please upgrade these modules to a supported branch as soon as possible.</comment>"
         );
     }
   }
