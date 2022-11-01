@@ -12,7 +12,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
 {
   protected $composer;
   protected $io;
-  protected $unsupported_modules = [];
+  protected $unsupportedModules = [];
 
   public function activate(Composer $composer, IOInterface $io) {
       $this->composer = $composer;
@@ -60,12 +60,17 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         }
 
         if (!$is_supported) {
-          $this->unsupported_modules[] = $name;
+          $this->unsupportedModules[] = $name;
         }
       }
     }
 
-    var_dump($this->unsupported_modules);
-    // lando drush core:requirements --severity=2 --ignore=public:///.htaccess,entity_update,search_api_server_unavailable"
+    var_dump($this->unsupportedModules);
+
+    if (!empty($this->unsupportedModules)) {
+      $this->io->write(
+          '<error>You are using versions of Drupal Modules that are no longer supported: ' . implode(', ', $this->unsupportedModules) . '</error>'
+      );
+    }
   }
 }
