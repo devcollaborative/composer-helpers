@@ -65,12 +65,18 @@ class Plugin implements PluginInterface, EventSubscriberInterface
       }
     }
 
-    var_dump($this->unsupportedModules);
-
     if (!empty($this->unsupportedModules)) {
       $this->io->write(
-          '<error>You are using versions of Drupal Modules that are no longer supported: ' . implode(', ', $this->unsupportedModules) . '</error>'
+          '<error>You are using versions of Drupal Modules that are no longer supported:</error>'
       );
+      foreach($this->unsupportedModules as $module) {
+        $this->io->write(
+            "<comment>-$module</comment>"
+        );
+      }
+      $this->io->write(
+            "<comment>Please upgrade this module to a supported branch as soon as possible.</comment>"
+        );
     }
   }
 }
