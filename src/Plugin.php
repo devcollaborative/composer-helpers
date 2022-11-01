@@ -67,7 +67,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
 
     if (!empty($this->unsupportedModules)) {
       $this->io->write(
-          '<error>You are using versions of Drupal Modules that are no longer supported:</error>'
+          '<error>You are using versions of Drupal modules that are no longer supported:</error>'
       );
       foreach($this->unsupportedModules as $module) {
         $this->io->write(
