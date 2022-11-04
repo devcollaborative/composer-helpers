@@ -58,25 +58,21 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         }
       }
     }
-
+    $this->io->write("");
     $this->writeUnsupportedMessages();
     $this->writeUpgradeMessages();
+    $this->io->write("");
   }
 
   private function writeUnsupportedMessages() {
     if (!empty($this->unsupportedModules)) {
-      $this->io->write(
-          '<comment>You are using versions of Drupal modules that are no longer supported:</comment>'
-      );
       foreach ($this->unsupportedModules as $module) {
         $supported_versions = implode('/', $module->supportedVersions);
         $this->io->write(
             "<error>- $module->name $module->currentVersion is unsupported; change to a supported branch: $supported_versions</error>"
         );
       }
-      $this->io->write(
-            "<comment>Please upgrade these modules to a supported branch as soon as possible.</comment>\n"
-        );
+      $this->io->write("");
     }
   }
 
@@ -90,6 +86,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
             "<comment>- Consider upgrading $module $version to a newer branch: $upgrade_list</comment>"
           );
       }
+      $this->io->write("");
     }
 
   }
