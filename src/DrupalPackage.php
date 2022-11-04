@@ -51,9 +51,9 @@ class DrupalPackage {
    */
   public function getNewerSupportedVersions() {
     $newer_supported_versions = [];
-    foreach ($this->supportedVersions as $currentVersion) {
-      if ($this->standardizeBranchSyntax($currentVersion) > $this->currentVersion) {
-        $newer_supported_versions[] = $currentVersion;
+    foreach ($this->supportedVersions as $version) {
+      if ($this->standardizeBranchSyntax($version) > $this->currentVersion) {
+        $newer_supported_versions[] = $version;
       }
     }
     return $newer_supported_versions;
