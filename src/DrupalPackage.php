@@ -20,9 +20,13 @@ class DrupalPackage {
       file_get_contents("https://updates.drupal.org/release-history/$this->name/current")
     );
 
-    $this->supportedVersions = explode(',', $module_data->supported_branches);
+    $supported_versions = explode(',', $module_data->supported_branches);
+    foreach($supported_versions as $version) {
+      $this->supportedVersions[]= rtrim($version, '.');
+    }
 
     $this->releases = $module_data->releases[0];
+
   }
 
   /**
@@ -67,5 +71,4 @@ class DrupalPackage {
     $array =  explode('-', $branch);
     return end($array);
   }
-
 }
