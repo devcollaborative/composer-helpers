@@ -48,12 +48,8 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         if (!$module->isCurrentBranchSupported()) {
           $this->unsupportedModules[] = $module;
         } else {
-          $higher_versions = ($module->getNewerSupportedVersions());
-          if (!empty($higher_versions)) {
-            $this->upgradableModules[$module->name] = [
-              'version' => $module->currentVersion,
-              'upgrade_list' => implode('/', $higher_versions),
-            ];
+          if ($module->getNewerSupportedVersions()) {
+            $this->upgradableModules[] = $module;
           }
         }
       }
@@ -78,12 +74,10 @@ class Plugin implements PluginInterface, EventSubscriberInterface
 
   private function writeUpgradeMessages() {
     if (!empty($this->upgradableModules)) {
-      foreach ($this->upgradableModules as $module => $data) {
-          $version = $data['version'];
-          $upgrade_list = $data['upgrade_list'];
-
+      foreach ($this->upgradableModules as $module) {
+          $upgrade_list = implode('/', $module->getNewerSupportedVersions());
           $this->io->write(
-            "<comment>- $module: consider upgrading from $version to a newer branch ($upgrade_list)</comment>"
+            "<comment>- $module->name: consider upgrading from $module->currentVersion to a newer branch ($upgrade_list)</comment>"
           );
       }
       $this->io->write("");
