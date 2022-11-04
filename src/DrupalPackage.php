@@ -1,0 +1,34 @@
+<?php
+
+namespace devcollaborative\ComposerHelpers;
+
+class DrupalPackage {
+
+  public string $name;
+  protected string $version;
+  protected array $supportedVersions;
+  protected object $releases;
+
+  function __construct($package) {
+    $this->name = explode('/', $package->getName())[1];
+    $this->version = $package->getExtra()['drupal']['version'];
+
+    $module_data = simplexml_load_string(
+      file_get_contents("https://updates.drupal.org/release-history/$this->name/current")
+    );
+
+    $this->supportedVersions = explode(',', $module_data->supported_branches);
+
+    $this->releases = $module_data->releases[0];
+  }
+
+  public function isCurrentBranchSupported() {
+    $is_supported = FALSE;
+    foreach ($this->supportedVersions as $supported_version) {
+      if (str_starts_with($this->version, $supported_version)) {
+        $is_supported = TRUE;
+      }
+    }
+    return $is_supported;
+  }
+}

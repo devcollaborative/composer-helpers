@@ -42,25 +42,9 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         $package->getType() == 'drupal-module' &&
         isset($package->getExtra()['drupal']['version'])
       ) {
-        $name= explode('/', $package->getName())[1];
-        $version = $package->getExtra()['drupal']['version'];
-
-        $module_data = simplexml_load_string(
-          file_get_contents("https://updates.drupal.org/release-history/$name/current")
-        );
-
-        $supported_versions= explode(',', $module_data->supported_branches);
-
-        $release_data = $module_data->releases[0];
-        $is_supported = false;
-        foreach($supported_versions as $supported_version) {
-          if (str_starts_with($version, $supported_version)) {
-            $is_supported = true;
-          }
-        }
-
-        if (!$is_supported) {
-          $this->unsupportedModules[] = $name;
+        $module = new DrupalPackage($package);
+        if (!$module->isCurrentBranchSupported()) {
+          $this->unsupportedModules[] = $module->name;
         }
       }
     }
