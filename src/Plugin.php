@@ -52,15 +52,16 @@ class Plugin implements PluginInterface, EventSubscriberInterface
 
     if (!empty($this->unsupportedModules)) {
       $this->io->write(
-          '<error>You are using versions of Drupal modules that are no longer supported:</error>'
+          '<comment>You are using versions of Drupal modules that are no longer supported:</comment>'
       );
       foreach ($this->unsupportedModules as $module) {
+        $supported_versions = implode(', ', $module->supportedVersions);
         $this->io->write(
-            "<comment>- $module->name</comment>"
+            "<error>- $module->name $module->version is unsupported; use instead: $supported_versions</error>"
         );
       }
       $this->io->write(
-            "<comment>Please upgrade these modules to a supported branch as soon as possible.</comment>"
+            "<comment>Please upgrade these modules to a supported branch as soon as possible.</comment>\n"
         );
     }
   }
