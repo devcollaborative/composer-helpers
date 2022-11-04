@@ -2,12 +2,15 @@
 
 namespace devcollaborative\ComposerHelpers;
 
+/**
+ * Object representing a Drupal module or theme package.
+ */
 class DrupalPackage {
 
   public string $name;
-  protected string $version;
-  protected array $supportedVersions;
-  protected object $releases;
+  public string $version;
+  public array $supportedVersions;
+  private object $releases;
 
   function __construct($package) {
     $this->name = explode('/', $package->getName())[1];
@@ -22,6 +25,11 @@ class DrupalPackage {
     $this->releases = $module_data->releases[0];
   }
 
+  /**
+   * Checks for maintainer support for the current project branch.
+   *
+   * @return bool
+   */
   public function isCurrentBranchSupported() {
     $is_supported = FALSE;
     foreach ($this->supportedVersions as $supported_version) {
@@ -30,5 +38,9 @@ class DrupalPackage {
       }
     }
     return $is_supported;
+  }
+
+  public function isHigherSupportedBranchAvailable() {
+    var_dump($this->supportedVersions);
   }
 }

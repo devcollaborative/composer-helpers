@@ -14,6 +14,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
   protected $io;
   protected $unsupportedModules = [];
 
+
   public function activate(Composer $composer, IOInterface $io) {
       $this->composer = $composer;
       $this->io = $io;
@@ -27,24 +28,24 @@ class Plugin implements PluginInterface, EventSubscriberInterface
 
   public static function getSubscribedEvents() {
       return array(
-          ScriptEvents::POST_UPDATE_CMD => 'checkDrupalStatus',
+          ScriptEvents::POST_UPDATE_CMD => 'checkDrupalPackagesStatus',
       );
   }
 
-  public function checkDrupalStatus() {
+  public function checkDrupalPackagesStatus() {
     $repositoryManager = $this->composer->getRepositoryManager();
     $localRepository = $repositoryManager->getLocalRepository();
-    $installationManager = $this->composer->getInstallationManager();
+    // $installationManager = $this->composer->getInstallationManager();
     $packages = $localRepository->getPackages();
 
-    foreach($packages as $package) {
+    foreach ($packages as $package) {
       if (
         $package->getType() == 'drupal-module' &&
         isset($package->getExtra()['drupal']['version'])
       ) {
         $module = new DrupalPackage($package);
         if (!$module->isCurrentBranchSupported()) {
-          $this->unsupportedModules[] = $module->name;
+          $this->unsupportedModules[] = $module;
         }
       }
     }
@@ -53,9 +54,9 @@ class Plugin implements PluginInterface, EventSubscriberInterface
       $this->io->write(
           '<error>You are using versions of Drupal modules that are no longer supported:</error>'
       );
-      foreach($this->unsupportedModules as $module) {
+      foreach ($this->unsupportedModules as $module) {
         $this->io->write(
-            "<comment>- $module</comment>"
+            "<comment>- $module->name</comment>"
         );
       }
       $this->io->write(
