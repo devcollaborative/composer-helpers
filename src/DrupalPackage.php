@@ -1,6 +1,6 @@
 <?php
 
-namespace devcollaborative\ComposerHelpers;
+namespace devcollaborative\DrupalBranchStatus;
 
 /**
  * Object representing a Drupal module or theme package.

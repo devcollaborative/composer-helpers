@@ -1,6 +1,6 @@
 <?php
 
-namespace devcollaborative\ComposerHelpers;
+namespace devcollaborative\DrupalBranchStatus;
 
 use Composer\Composer;
 use Composer\EventDispatcher\EventSubscriberInterface;

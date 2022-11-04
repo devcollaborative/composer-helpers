@@ -1,5 +1,5 @@
 {
-    "name": "devcollaborative/composer-helpers",
+    "name": "devcollaborative/drupal-branch-status",
     "description": "Helper scripts for DevCollaborative's composer workflow",
     "type": "composer-plugin",
     "license": "GPL-2.0-or-later",
@@ -10,7 +10,7 @@
         }
     ],
     "extra": {
-        "class": "devcollaborative\\ComposerHelpers\\Plugin"
+        "class": "devcollaborative\\DrupalBranchStatus\\Plugin"
     },
     "require": {
         "composer-plugin-api": "^2.0",
@@ -21,7 +21,7 @@
     },
     "autoload": {
         "psr-4": {
-            "devcollaborative\\ComposerHelpers\\": "src/"
+            "devcollaborative\\DrupalBranchStatus\\": "src/"
         }
     }
 }
