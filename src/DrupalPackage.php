@@ -40,7 +40,19 @@ class DrupalPackage {
     return $is_supported;
   }
 
-  public function isHigherSupportedBranchAvailable() {
-    var_dump($this->supportedVersions);
+  public function HigherSupportedBranchAvailable() {
+    $higher_supported_versions = [];
+    foreach ($this->supportedVersions as $version) {
+      if ($this->standardizeBranchSyntax($version) > $this->version) {
+        $higher_supported_versions[] = $version;
+      }
+    }
+    return $higher_supported_versions;
   }
+
+  private function standardizeBranchSyntax($branch) {
+    $array =  explode('-', $branch);
+    return end($array);
+  }
+
 }
