@@ -48,10 +48,10 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         if (!$module->isCurrentBranchSupported()) {
           $this->unsupportedModules[] = $module;
         } else {
-          $higher_versions = ($module->HigherSupportedBranchAvailable());
+          $higher_versions = ($module->getNewerSupportedVersions());
           if (!empty($higher_versions)) {
             $this->upgradableModules[$module->name] = [
-              'version' => $module->version,
+              'version' => $module->currentVersion,
               'upgrade_list' => implode('/', $higher_versions),
             ];
           }
@@ -71,7 +71,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
       foreach ($this->unsupportedModules as $module) {
         $supported_versions = implode('/', $module->supportedVersions);
         $this->io->write(
-            "<error>- $module->name $module->version is unsupported; change to a supported branch: $supported_versions</error>"
+            "<error>- $module->name $module->currentVersion is unsupported; change to a supported branch: $supported_versions</error>"
         );
       }
       $this->io->write(
