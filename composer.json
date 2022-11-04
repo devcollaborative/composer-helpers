@@ -1,6 +1,6 @@
 {
     "name": "devcollaborative/drupal-branch-status",
-    "description": "Helper scripts for DevCollaborative's composer workflow",
+    "description": "Custom plugin to check drupal modules for branch upgrade/support status",
     "type": "composer-plugin",
     "license": "GPL-2.0-or-later",
     "authors": [
