@@ -10,7 +10,6 @@ class DrupalPackage {
   public string $name;
   public string $currentVersion;
   public array $supportedVersions;
-  private object $releases;
 
   function __construct($package) {
     $this->name = explode('/', $package->getName())[1];
@@ -25,8 +24,7 @@ class DrupalPackage {
       $this->supportedVersions[]= rtrim($version, '.');
     }
 
-    $this->releases = $module_data->releases[0];
-
+    // $this->releases = $module_data->releases[0];
   }
 
   /**
