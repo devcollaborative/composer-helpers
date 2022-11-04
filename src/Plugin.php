@@ -8,31 +8,49 @@ use Composer\IO\IOInterface;
 use Composer\Plugin\PluginInterface;
 use Composer\Script\ScriptEvents;
 
-class Plugin implements PluginInterface, EventSubscriberInterface
-{
+/**
+ * Custom plugin to check drupal modules for branch upgrade/support status.
+ */
+class Plugin implements PluginInterface, EventSubscriberInterface {
   protected $composer;
   protected $io;
   protected $unsupportedModules = [];
   protected $upgradableModules = [];
 
-
+  /**
+   * {@inheritdoc}
+   */
   public function activate(Composer $composer, IOInterface $io) {
-      $this->composer = $composer;
-      $this->io = $io;
+    $this->composer = $composer;
+    $this->io = $io;
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function deactivate(Composer $composer, IOInterface $io) {
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function uninstall(Composer $composer, IOInterface $io) {
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public static function getSubscribedEvents() {
       return array(
           ScriptEvents::POST_UPDATE_CMD => 'checkDrupalPackagesStatus',
       );
   }
 
+  /**
+   * Identifies installed Drupal packages and checks their branch statuses
+   *
+   * @return void
+   */
   public function checkDrupalPackagesStatus() {
     $repositoryManager = $this->composer->getRepositoryManager();
     $localRepository = $repositoryManager->getLocalRepository();
@@ -60,6 +78,11 @@ class Plugin implements PluginInterface, EventSubscriberInterface
     $this->io->write("");
   }
 
+  /**
+   * Outputs messages identifying drupal projects on unsupported branches.
+   *
+   * @return void
+   */
   private function writeUnsupportedMessages() {
     if (!empty($this->unsupportedModules)) {
       foreach ($this->unsupportedModules as $module) {
@@ -72,6 +95,11 @@ class Plugin implements PluginInterface, EventSubscriberInterface
     }
   }
 
+  /**
+   * Outputs messages identifying drupal projects with newer branches available.
+   *
+   * @return void
+   */
   private function writeUpgradeMessages() {
     if (!empty($this->upgradableModules)) {
       foreach ($this->upgradableModules as $module) {
