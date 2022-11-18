@@ -10,6 +10,7 @@ class DrupalPackage {
   public string $name;
   public string $currentVersion;
   public array $supportedVersions;
+  private object $releases;
 
   function __construct($package) {
     $this->name = explode('/', $package->getName())[1];
@@ -24,7 +25,7 @@ class DrupalPackage {
       $this->supportedVersions[]= rtrim($version, '.');
     }
 
-    // $this->releases = $module_data->releases[0];
+    $this->releases = $module_data->releases[0];
   }
 
   /**
@@ -43,15 +44,30 @@ class DrupalPackage {
   }
 
   /**
-   * Returns supported versions that are greater than the current release.
+   * Returns supported, covered versions newer than the current release.
    *
    * @return array
    */
   public function getNewerSupportedVersions() {
     $newer_supported_versions = [];
     foreach ($this->supportedVersions as $version) {
+      // Check to see if branch version is higher than current branch.
       if ($this->standardizeBranchSyntax($version) > $this->currentVersion) {
-        $newer_supported_versions[] = $version;
+
+        // Check if branch has a release with security advisory coverage.
+        $has_coverage = FALSE;
+        foreach ($this->releases as $release) {
+          if (
+            str_starts_with($release->version, $version) &&
+            $release->security == "Covered by Drupal's security advisory policy"
+          ) {
+            $has_coverage = TRUE;
+          }
+        }
+
+        if ($has_coverage) {
+          $newer_supported_versions[] = $version;
+        }
       }
     }
     return $newer_supported_versions;
