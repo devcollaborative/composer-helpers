@@ -62,6 +62,7 @@ class DrupalPackage {
             $release->security == "Covered by Drupal's security advisory policy"
           ) {
             $has_coverage = TRUE;
+            break;
           }
         }
 
