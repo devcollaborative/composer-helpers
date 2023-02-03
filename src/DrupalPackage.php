@@ -52,7 +52,7 @@ class DrupalPackage {
     $newer_supported_versions = [];
     foreach ($this->supportedVersions as $version) {
       // Check to see if branch version is higher than current branch.
-      if ($this->standardizeBranchSyntax($version) > $this->currentVersion) {
+      if ($this->standardizeBranchSyntax($version) > $this->standardizeBranchSyntax($this->currentVersion)) {
 
         // Check if branch has a release with security advisory coverage.
         $has_coverage = FALSE;
