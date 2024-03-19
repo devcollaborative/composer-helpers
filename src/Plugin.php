@@ -71,6 +71,16 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
           }
         }
       }
+      else if ($package->getType() == "drupal-core") {
+        $core = new DrupalCore($package);
+        if (!$core->isCurrentBranchSupported()) {
+          $this->unsupportedModules[] = $core;
+        } else {
+          if ($module->getNewerSupportedVersions()) {
+            $this->upgradableModules[] = $core;
+          }
+        }
+      }
     }
     $this->io->write("");
     $this->writeUnsupportedMessages();

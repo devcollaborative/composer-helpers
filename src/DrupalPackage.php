@@ -10,12 +10,19 @@ class DrupalPackage {
   public string $name;
   public string $currentVersion;
   public array $supportedVersions;
-  private object $releases;
+  protected object $releases;
 
   function __construct($package) {
     $this->name = explode('/', $package->getName())[1];
-    $this->currentVersion = $package->getExtra()['drupal']['version'];
+    if ($this->name == 'core') {
+      $this->name = 'drupal';
+    }
 
+    $this->currentVersion = $package->getExtra()['drupal']['version'];
+    $this->processDrupalData();
+  }
+
+  protected function processDrupalData() {
     $module_data = simplexml_load_string(
       file_get_contents("https://updates.drupal.org/release-history/$this->name/current")
     );
