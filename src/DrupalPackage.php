@@ -12,7 +12,7 @@ class DrupalPackage {
   public array $supportedVersions;
   protected object $releases;
 
-  function __construct($package) {
+  public function __construct($package) {
     $this->name = explode('/', $package->getName())[1];
     if ($this->name == 'core') {
       $this->name = 'drupal';
@@ -22,14 +22,17 @@ class DrupalPackage {
     $this->processDrupalData();
   }
 
+  /**
+   * Get the xml module data from drupal.org and parse it.
+   */
   protected function processDrupalData() {
     $module_data = simplexml_load_string(
       file_get_contents("https://updates.drupal.org/release-history/$this->name/current")
     );
 
     $supported_versions = explode(',', $module_data->supported_branches);
-    foreach($supported_versions as $version) {
-      $this->supportedVersions[]= rtrim($version, '.');
+    foreach ($supported_versions as $version) {
+      $this->supportedVersions[] = rtrim($version, '.');
     }
 
     $this->releases = $module_data->releases[0];
@@ -39,6 +42,7 @@ class DrupalPackage {
    * Checks for maintainer support for the current project branch.
    *
    * @return bool
+   *   Whether or not the current branch is supported.
    */
   public function isCurrentBranchSupported() {
     $is_supported = FALSE;
@@ -54,6 +58,7 @@ class DrupalPackage {
    * Returns supported, covered versions newer than the current release.
    *
    * @return array
+   *   List of newer branches of the module.
    */
   public function getNewerSupportedVersions() {
     $newer_supported_versions = [];
@@ -87,10 +92,14 @@ class DrupalPackage {
    * Example: 8.x-1.2 becomes 1.2.
    *
    * @param string $branch
+   *   Branch name from raw drupal data.
+   *
    * @return string
+   *   Standardized branch name.
    */
   private function standardizeBranchSyntax($branch) {
-    $array =  explode('-', $branch);
+    $array = explode('-', $branch);
     return end($array);
   }
+
 }

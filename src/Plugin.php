@@ -41,15 +41,11 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
    * {@inheritdoc}
    */
   public static function getSubscribedEvents() {
-      return array(
-          ScriptEvents::POST_UPDATE_CMD => 'checkDrupalPackagesStatus',
-      );
+    return [ScriptEvents::POST_UPDATE_CMD => 'checkDrupalPackagesStatus'];
   }
 
   /**
-   * Identifies installed Drupal packages and checks their branch statuses
-   *
-   * @return void
+   * Identifies installed Drupal packages and checks their branch statuses.
    */
   public function checkDrupalPackagesStatus() {
     $repositoryManager = $this->composer->getRepositoryManager();
@@ -65,18 +61,20 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
         $module = new DrupalPackage($package);
         if (!$module->isCurrentBranchSupported()) {
           $this->unsupportedModules[] = $module;
-        } else {
+        }
+        else {
           if ($module->getNewerSupportedVersions()) {
             $this->upgradableModules[] = $module;
           }
         }
       }
-      else if ($package->getType() == "drupal-core") {
+      elseif ($package->getType() == "drupal-core") {
         $core = new DrupalCore($package);
         if (!$core->isCurrentBranchSupported()) {
           $this->unsupportedModules[] = $core;
-        } else {
-          if ($module->getNewerSupportedVersions()) {
+        }
+        else {
+          if ($core->getNewerSupportedVersions()) {
             $this->upgradableModules[] = $core;
           }
         }
@@ -90,8 +88,6 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
 
   /**
    * Outputs messages identifying drupal projects on unsupported branches.
-   *
-   * @return void
    */
   private function writeUnsupportedMessages() {
     if (!empty($this->unsupportedModules)) {
@@ -107,19 +103,17 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
 
   /**
    * Outputs messages identifying drupal projects with newer branches available.
-   *
-   * @return void
    */
   private function writeUpgradeMessages() {
     if (!empty($this->upgradableModules)) {
       foreach ($this->upgradableModules as $module) {
-          $upgrade_list = implode('/', $module->getNewerSupportedVersions());
-          $this->io->write(
-            "<comment>- $module->name: consider upgrading from $module->currentVersion to a newer branch ($upgrade_list)</comment>"
-          );
+        $upgrade_list = implode('/', $module->getNewerSupportedVersions());
+        $this->io->write(
+          "<comment>- $module->name: consider upgrading from $module->currentVersion to a newer branch ($upgrade_list)</comment>"
+        );
       }
       $this->io->write("");
     }
-
   }
+
 }

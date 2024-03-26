@@ -7,7 +7,7 @@ namespace devcollaborative\DrupalBranchStatus;
  */
 class DrupalCore extends DrupalPackage {
 
-  function __construct($package) {
+  public function __construct($package) {
     $this->name = 'drupal';
 
     $this->currentVersion = $package->getVersion();
